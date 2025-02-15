@@ -21,43 +21,35 @@ pub use sifli_pac as pac;
 #[cfg(not(feature = "unstable-pac"))]
 pub(crate) use sifli_pac as pac;
 
-/// HAL configuration for RP.
+/// HAL configuration for SiFli
 pub mod config {
-    // use crate::clocks::ClockConfig;
+    use crate::rcc;
+    use crate::interrupt;
 
     /// HAL configuration passed when initializing.
     #[non_exhaustive]
     pub struct Config {
-        // /// Clock configuration.
-        // pub clocks: ClockConfig,
+        pub rcc: rcc::Config,
+        pub gpio1_it_priority: interrupt::Priority,
     }
 
     impl Default for Config {
         fn default() -> Self {
             Self {
-                // clocks: ClockConfig::crystal(12_000_000),
+                rcc: rcc::Config::new_keep(),
+                gpio1_it_priority: interrupt::Priority::P3,
             }
         }
     }
-
-    impl Config {
-        // /// Create a new configuration with the provided clock config.
-        // pub fn new(clocks: ClockConfig) -> Self {
-        //     Self { clocks }
-        // }
-
-        pub fn new() -> Self {
-            Self {}
-        }
-    }
 }
+pub use config::Config;
 
 /// Initialize the `sifli-hal` with the provided configuration.
 ///
 /// This returns the peripheral singletons that can be used for creating drivers.
 ///
 /// This should only be called once at startup, otherwise it panics.
-pub fn init(_config: config::Config) -> Peripherals {
+pub fn init(config: Config) -> Peripherals {
     system_init();
 
     // Do this first, so that it panics if user is calling `init` a second time
@@ -65,11 +57,13 @@ pub fn init(_config: config::Config) -> Peripherals {
     let p = Peripherals::take();
 
     unsafe {
-        // clocks::init(config.clocks);
+        // rcc::Config::apply() is not ready yet
+        // config.rcc.apply();
+
         #[cfg(feature = "_time-driver")]
         time_driver::init();
         
-        gpio::init();
+        gpio::init(config.gpio1_it_priority);
 
         // dma::init();
     }

@@ -172,10 +172,10 @@ pub enum InterruptTrigger {
     AnyEdge,
 }
 
-pub(crate) unsafe fn init() {
+pub(crate) unsafe fn init(gpio1_it_priority: interrupt::Priority) {
     unsafe {
         interrupt::GPIO1.disable();
-        interrupt::GPIO1.set_priority(interrupt::Priority::P3);
+        interrupt::GPIO1.set_priority(gpio1_it_priority);
         interrupt::GPIO1.enable();
     }
     crate::rcc::enable_and_reset::<peripherals::HPSYS_GPIO>();
