@@ -3,6 +3,9 @@ use critical_section::CriticalSection;
 mod clock;
 pub use clock::*;
 
+mod clock_configure;
+pub use clock_configure::*;
+
 use crate::time::Hertz;
 
 pub(crate) trait SealedRccEnableReset {

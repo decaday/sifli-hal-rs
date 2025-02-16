@@ -11,6 +11,9 @@ pub mod rcc;
 pub mod gpio;
 pub mod timer;
 pub mod time;
+pub mod efuse;
+pub mod pmu;
+pub mod syscfg;
 #[cfg(feature = "_time-driver")]
 pub mod time_driver;
 
@@ -97,19 +100,19 @@ pub(crate) mod _generated {
 pub use _generated::interrupt;
 pub use _generated::{peripherals, Peripherals};
 
+/// Performs a busy-wait delay for a specified number of microseconds, using the `cortex-m::asm::delay` function.
+pub fn cortex_m_blocking_delay_us(us: u32) {
+    let freq = rcc::get_hclk_freq().unwrap().0 as u64;
+    let cycles = freq * us as u64 / 1_000_000;
+    cortex_m::asm::delay(cycles as u32);
+}
+
 /// Performs a busy-wait delay for a specified number of microseconds.
-#[allow(unused)]
-pub(crate) fn blocking_delay_us(us: u32) {
+pub fn blocking_delay_us(us: u32) {
     #[cfg(feature = "time")]
     embassy_time::block_for(embassy_time::Duration::from_micros(us as u64));
     #[cfg(not(feature = "time"))]
-    {
-        todo!();
-        // let freq = unsafe { crate::rcc::get_freqs() }.sys.to_hertz().unwrap().0 as u64;
-        // let us = us as u64;
-        // let cycles = freq * us / 1_000_000;
-        // cortex_m::asm::delay(cycles as u32);
-    }
+    cortex_m_blocking_delay_us(us);
 }
 
 /// Macro to bind interrupts to handlers.

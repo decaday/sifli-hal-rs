@@ -13,8 +13,8 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-# sifli-pac = { version = "0.0.0", path = "../../sifli-pac" }
-sifli-pac = { git = "https://github.com/OpenSiFli/sifli-pac" }
+sifli-pac = { version = "0.0.0", path = "../../sifli-pac" }
+# sifli-pac = { git = "https://github.com/OpenSiFli/sifli-pac" }
 
 embassy-sync = { version = "0.6.2" }
 embassy-time-driver = { version = "0.2", optional = true }
@@ -82,3 +82,7 @@ time-driver-gptim2 = ["_time-driver-gptim"]
 _time-driver-atim = ["_time-driver"]
 _time-driver-gptim = ["_time-driver"]
 _time-driver = ["embassy-time-driver", "embassy-time-queue-utils"]
+
+## Enable this feature to disable the overclocking check.
+## DO NOT ENABLE THIS FEATURE UNLESS YOU KNOW WHAT YOU'RE DOING.
+unchecked-overclocking = []

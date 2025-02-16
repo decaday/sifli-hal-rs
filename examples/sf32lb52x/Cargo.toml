@@ -22,3 +22,6 @@ embedded-io-async = { version = "0.6.1" }
 
 defmt = "0.3"
 defmt-rtt = "0.4"
+
+[patch.crates-io]
+cortex-m-rt = {path = "F:/Projects2/11-sifli/cortex-m/cortex-m-rt"}

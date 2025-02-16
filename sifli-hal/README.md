@@ -57,6 +57,8 @@ Rust Hardware Abstraction Layer (HAL) and [Embassy](https://github.com/embassy-r
 
 - `time-driver-xxx`: Timer configuration for `time-driver`. It requires at least two capture/compare channels. For the `sf32lb52x hcpu`, only `atim1`(TODO), `gptim1`, and `gptim2` are available.
 
+- `unchecked-overclocking`: Enable this feature to disable the overclocking check. DO NOT ENABLE THIS FEATURE UNLESS YOU KNOW WHAT YOU'RE DOING.
+
 ## License
 
 This project is licensed under either of

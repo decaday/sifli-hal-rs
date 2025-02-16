@@ -514,7 +514,7 @@ impl<'d> Flex<'d> {
         }
 
         // WAIT_ISR_DISABLED
-        // crate::blocking_delay_us(1);
+        crate::cortex_m_blocking_delay_us(1);
 
         if pin.pin.pin() % 32 == 0 {
             pin.pin.gpio().isr0().write_value(sifli_pac::hpsys_gpio::regs::Isr0(pin.bit()));
